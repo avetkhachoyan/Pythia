@@ -1,0 +1,22 @@
+[
+    {
+        "id": "1",
+        "options": {
+            "option_0": 0.1,
+            "option_1": 0.2,
+            "option_2": 0.3,
+            "option_3": 0.4,
+            "option_4": 0.5
+        }
+    },
+    {
+        "id": "2",
+        "options": {
+            "option_0": 0.5,
+            "option_1": 0.4,
+            "option_2": 0.3,
+            "option_3": 0.2,
+            "option_4": 0.1
+        }
+    }
+]
