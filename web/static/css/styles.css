@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+pre {
+    background: #f4f4f4;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+button {
+    background: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+label {
+    display: inline-block;
+    width: 100px;
+}
+
+input {
+    margin-bottom: 10px;
+}
