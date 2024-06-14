@@ -18,7 +18,7 @@ Prediction priestess Pythia based on to AI and Blockchain symbioz
     pip install -r requirements.txt
     ```
 
-2. Compile and deploy the smart-contract into Ethereum network
+2. Compile and deploy the smart-contract into Ethereum network. Add Contract address into app.py .
 
 3. Initiate the data:
     ```sh
@@ -35,4 +35,7 @@ Prediction priestess Pythia based on to AI and Blockchain symbioz
     python web/app.py
     ```
 
-6. Browse `web/templates/index.html`
+6. Browse via preferable browser
+
+
+[Ա](https://khachoyan.com) -
