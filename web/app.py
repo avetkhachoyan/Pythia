@@ -28,12 +28,18 @@ def get_units():
 def get_events():
     return jsonify(events)
 
+def parse_timestamp(timestamp):
+    try:
+        return datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S").timestamp()
+    except ValueError:
+        return datetime.strptime(timestamp, "%Y-%m-%dT%H:%M").timestamp()
+
 @app.route('/api/predict', methods=['POST'])
 def predict_event():
     data = request.json
     options = data['options']
     timestamp = data['timestamp']
-    input_data = {**options, "timestamp": datetime.timestamp(datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S"))}
+    input_data = {**options, "timestamp": parse_timestamp(timestamp)}
     input_df = pd.DataFrame([input_data])
     prediction = model.predict(input_df)[0]
     return jsonify({"predicted_event_type": prediction})
