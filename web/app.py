@@ -57,7 +57,7 @@ def predict_event():
     input_df = pd.DataFrame([input_data])
     prediction = model.predict(input_df)[0]
 
-    tx_hash = contract.functions.logEvent(
+    tx_hash = contract.functions.addEvent(
         prediction,
         list(options.values()),
         int(unix_timestamp)
