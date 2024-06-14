@@ -13,7 +13,7 @@ class Event:
         self.id = str(uuid.uuid4())
         self.event_type = event_type
         self.unit_ids = unit_ids
-        self.timestamp = timestamp
+        self.timestamp = timestamp.isoformat()
 
 def generate_units(num_units):
     units = []
@@ -38,7 +38,7 @@ units = generate_units(10)
 events = generate_events(units, 20)
 
 with open('data/units.json', 'w') as f:
-    json.dump([unit.__dict__ for unit in units], f)
+    json.dump([unit.__dict__ for unit in units], f, indent=4)
 
 with open('data/events.json', 'w') as f:
-    json.dump([event.__dict__ for event in events], f)
+    json.dump([event.__dict__ for event in events], f, indent=4)

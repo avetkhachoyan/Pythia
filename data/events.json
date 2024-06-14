@@ -1,14 +1,1 @@
-[
-    {
-        "id": "1",
-        "event_type": "birth",
-        "unit_ids": ["1"],
-        "timestamp": "2023-06-12T12:00:00"
-    },
-    {
-        "id": "2",
-        "event_type": "meeting",
-        "unit_ids": ["1", "2"],
-        "timestamp": "2023-06-13T12:00:00"
-    }
-]
+[{"id": "9da09346-cca2-4445-a868-13cde92a6f7e", "event_type": "birth", "unit_ids": ["f735f66c-82e4-4ff4-861e-f4ea18b55ed7", "c6655fe7-3235-4f5f-9f3c-411b2462aa57"], "timestamp": 
