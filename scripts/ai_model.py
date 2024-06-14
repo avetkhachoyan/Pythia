@@ -21,6 +21,8 @@ for event in events:
 
 df = pd.DataFrame(data)
 
+df['timestamp'] = df['timestamp'].apply(lambda x: datetime.fromisoformat(x).timestamp())
+
 X = df.drop(columns=["event_type"])
 y = df["event_type"]
 
