@@ -20,6 +20,14 @@ with open(events_path, 'r') as f:
 
 model = joblib.load(model_path)
 
+def parse_timestamp(timestamp):
+    for fmt in ('%Y-%m-%dT%H:%M:%S', '%Y-%m-%dT%H:%M'):
+        try:
+            return datetime.strptime(timestamp, fmt).timestamp()
+        except ValueError:
+            continue
+    raise ValueError(f"time data '{timestamp}' does not match any supported format")
+
 @app.route('/api/units', methods=['GET'])
 def get_units():
     return jsonify(units)
@@ -28,18 +36,17 @@ def get_units():
 def get_events():
     return jsonify(events)
 
-def parse_timestamp(timestamp):
-    try:
-        return datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S").timestamp()
-    except ValueError:
-        return datetime.strptime(timestamp, "%Y-%m-%dT%H:%M").timestamp()
-
 @app.route('/api/predict', methods=['POST'])
 def predict_event():
     data = request.json
     options = data['options']
     timestamp = data['timestamp']
-    input_data = {**options, "timestamp": parse_timestamp(timestamp)}
+    try:
+        unix_timestamp = parse_timestamp(timestamp)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+    
+    input_data = {**options, "timestamp": unix_timestamp}
     input_df = pd.DataFrame([input_data])
     prediction = model.predict(input_df)[0]
     return jsonify({"predicted_event_type": prediction})
