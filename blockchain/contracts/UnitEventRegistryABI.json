@@ -1,4 +1,105 @@
-{
-    "_comment": "Put UnitEventRegistryABI as json here"
-}
-
+[
+  {
+    "name": "addEvent",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "eventId",
+        "type": "bytes32",
+        "description": "A unique identifier for the event"
+      },
+      {
+        "name": "eventType",
+        "type": "string",
+        "description": "The type of the event"
+      },
+      {
+        "name": "unitIds",
+        "type": "bytes32[]",
+        "description": "An array of unit identifiers involved in the event"
+      },
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "description": "The timestamp of the event"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "description": "Adds a new event to the contract"
+  },
+  {
+    "name": "addUnit",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "unitId",
+        "type": "bytes32",
+        "description": "A unique identifier for the unit"
+      },
+      {
+        "name": "optionKeys",
+        "type": "string[]",
+        "description": "An array of option keys associated with the unit"
+      },
+      {
+        "name": "optionValues",
+        "type": "uint256[]",
+        "description": "An array of option values associated with the unit"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "description": "Adds a new unit to the contract"
+  },
+  {
+    "name": "events",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "description": "A unique identifier for the event to retrieve"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "id",
+        "type": "bytes32",
+        "description": "The identifier of the event"
+      },
+      {
+        "name": "eventType",
+        "type": "string",
+        "description": "The type of the event"
+      },
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "description": "The timestamp of the event"
+      }
+    ],
+    "stateMutability": "view",
+    "description": "Retrieves details of a specific event"
+  },
+  {
+    "name": "units",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "description": "A unique identifier for the unit to retrieve"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "id",
+        "type": "bytes32",
+        "description": "The identifier of the unit"
+      }
+    ],
+    "stateMutability": "view",
+    "description": "Retrieves details of a specific unit"
+  }
+]
