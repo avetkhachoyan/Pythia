@@ -23,7 +23,7 @@ model = joblib.load(model_path)
 
 web3 = Web3(Web3.HTTPProvider('http://127.0.0.1:8545'))
 contract_address = 'UnitEventRegistry_CONTRACT_ADDRESS'
-with open(os.path.join(base_dir, '../blockchain/UnitEventRegistryABI.json'), 'r') as f:
+with open(os.path.join(base_dir, '../blockchain/contracts/UnitEventRegistryABI.json'), 'r') as f:
     contract_abi = json.load(f)
 contract = web3.eth.contract(address=contract_address, abi=contract_abi)
 
