@@ -40,5 +40,5 @@ events = generate_events(units, 20)
 with open('data/units.json', 'w') as f:
     json.dump([unit.__dict__ for unit in units], f)
 
-with open('data/events.json', 'w') as f):
+with open('data/events.json', 'w') as f:
     json.dump([event.__dict__ for event in events], f)
