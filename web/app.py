@@ -4,6 +4,7 @@ import joblib
 import pandas as pd
 from datetime import datetime
 import os
+from web3 import Web3
 
 app = Flask(__name__, static_url_path='', static_folder='static', template_folder='templates')
 
@@ -19,6 +20,12 @@ with open(events_path, 'r') as f:
     events = json.load(f)
 
 model = joblib.load(model_path)
+
+web3 = Web3(Web3.HTTPProvider('http://127.0.0.1:8545'))
+contract_address = 'UnitEventRegistry_CONTRACT_ADDRESS'
+with open(os.path.join(base_dir, '../blockchain/UnitEventRegistryABI.json'), 'r') as f:
+    contract_abi = json.load(f)
+contract = web3.eth.contract(address=contract_address, abi=contract_abi)
 
 def parse_timestamp(timestamp):
     for fmt in ('%Y-%m-%dT%H:%M:%S', '%Y-%m-%dT%H:%M'):
@@ -49,7 +56,15 @@ def predict_event():
     input_data = {**options, "timestamp": unix_timestamp}
     input_df = pd.DataFrame([input_data])
     prediction = model.predict(input_df)[0]
-    return jsonify({"predicted_event_type": prediction})
+
+    tx_hash = contract.functions.logEvent(
+        prediction,
+        list(options.values()),
+        int(unix_timestamp)
+    ).transact({'from': web3.eth.accounts[0]})
+    receipt = web3.eth.waitForTransactionReceipt(tx_hash)
+
+    return jsonify({"predicted_event_type": prediction, "transaction_receipt": dict(receipt)})
 
 @app.route('/')
 def index():
