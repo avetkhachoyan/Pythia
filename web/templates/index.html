@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>Unit Event Prediction</title>
     <link rel="stylesheet" href="static/css/styles.css">
+    <title>Web3 Life Experience</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <script src="main.js" defer></script>
     <script>
         async function fetchUnits() {
             const response = await fetch('/api/units');
@@ -74,5 +77,7 @@
     <div id="account"></div>
     <div id="balance"></div>
     <script src="/static/js/main.js"></script>
+    <button id="connectButton">Connect to web3 Life experience</button>
+    <div id="accountInfo"></div>
 </body>
 </html>

@@ -24,7 +24,7 @@ contract HumanLifeToken is ERC721Enumerable, Ownable {
 
     event FirstTimeConnected(address indexed user);
 
-    constructor() ERC721("HumanLifeToken", "HLT") {}
+    constructor() ERC721("HumanLifeToken", "HLT") Ownable(msg.sender) {}
 
     function mintFirstTimeToken(address to) public {
         require(!hasConnected[to], "Token already minted for this address");
@@ -41,7 +41,14 @@ contract HumanLifeToken is ERC721Enumerable, Ownable {
 
     function setHumanLife(uint256 tokenId, string memory name, string memory birthDate, string memory birthPlace, string memory gender) public {
         require(ownerOf(tokenId) == msg.sender, "You do not own this token");
-        humanLives[tokenId] = HumanLife(name, birthDate, birthPlace, gender, new LifeEvent[](0));
+        
+        delete humanLives[tokenId].events;
+        
+        HumanLife storage hl = humanLives[tokenId];
+        hl.name = name;
+        hl.birthDate = birthDate;
+        hl.birthPlace = birthPlace;
+        hl.gender = gender;
     }
 
     function getHumanLife(uint256 tokenId) public view returns (HumanLife memory) {
