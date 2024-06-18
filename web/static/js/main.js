@@ -1,29 +1,33 @@
-async function loadContract() {
-    const contractAddress = 'HumanLifeToken_ADDRESS_HERE';
-    const abi = await fetch('./blockchain/contracts/HumanLifeTokenABI.json').then(response => response.json());
+document.getElementById('loadUnitsButton').addEventListener('click', async () => {
+    const response = await fetch('/api/units');
+    const units = await response.json();
+    document.getElementById('units').innerText = JSON.stringify(units, null, 2);
+});
 
-    if (typeof window.ethereum !== 'undefined') {
-        try {
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const account = accounts[0];
-            document.getElementById('accountInfo').innerText = `Connected account: ${account}`;
+document.getElementById('loadEventsButton').addEventListener('click', async () => {
+    const response = await fetch('/api/events');
+    const events = await response.json();
+    document.getElementById('events').innerText = JSON.stringify(events, null, 2);
+});
 
-            const web3 = new Web3(window.ethereum);
-            const contract = new web3.eth.Contract(abi, contractAddress);
+document.getElementById('predictEventButton').addEventListener('click', async () => {
+    const options = {
+        option_0: parseFloat(document.getElementById('option_0').value),
+        option_1: parseFloat(document.getElementById('option_1').value),
+        option_2: parseFloat(document.getElementById('option_2').value),
+        option_3: parseFloat(document.getElementById('option_3').value),
+        option_4: parseFloat(document.getElementById('option_4').value),
+    };
+    const timestamp = document.getElementById('timestamp').value;
 
-            const hasConnected = await contract.methods.hasConnected(account).call();
-            if (!hasConnected) {
-                await contract.methods.mintFirstTimeToken(account).send({ from: account });
-                alert('First time connected to Web3 Life token minted!');
-            } else {
-                alert('Welcome back! You already have a Web3 Life token.');
-            }
-        } catch (error) {
-            console.error('Error connecting to Metamask', error);
-        }
-    } else {
-        alert('Please install MetaMask!');
-    }
-}
+    const response = await fetch('/api/predict', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ options, timestamp }),
+    });
 
-document.getElementById('connectButton').onclick = loadContract;
+    const result = await response.json();
+    document.getElementById('prediction').innerText = JSON.stringify(result, null, 2);
+});

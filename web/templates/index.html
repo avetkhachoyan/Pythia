@@ -2,57 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Unit Event Prediction</title>
-    <link rel="stylesheet" href="static/css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web3 Life Experience</title>
+    <link rel="stylesheet" href="static/css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
-    <script src="main.js" defer></script>
-    <script>
-        async function fetchUnits() {
-            const response = await fetch('/api/units');
-            const units = await response.json();
-            document.getElementById('units').innerText = JSON.stringify(units, null, 2);
-        }
-
-        async function fetchEvents() {
-            const response = await fetch('/api/events');
-            const events = await response.json();
-            document.getElementById('events').innerText = JSON.stringify(events, null, 2);
-        }
-
-        async function predictEvent() {
-            const options = {
-                option_0: parseFloat(document.getElementById('option_0').value),
-                option_1: parseFloat(document.getElementById('option_1').value),
-                option_2: parseFloat(document.getElementById('option_2').value),
-                option_3: parseFloat(document.getElementById('option_3').value),
-                option_4: parseFloat(document.getElementById('option_4').value),
-            };
-            const timestamp = document.getElementById('timestamp').value;
-
-            const response = await fetch('/api/predict', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ options, timestamp }),
-            });
-
-            const result = await response.json();
-            document.getElementById('prediction').innerText = JSON.stringify(result, null, 2);
-        }
-    </script>
 </head>
 <body>
     <h1>Unit Event Prediction</h1>
 
     <h2>Units</h2>
     <pre id="units"></pre>
-    <button onclick="fetchUnits()">Load Units</button>
+    <button id="loadUnitsButton">Load Units</button>
 
     <h2>Events</h2>
     <pre id="events"></pre>
-    <button onclick="fetchEvents()">Load Events</button>
+    <button id="loadEventsButton">Load Events</button>
 
     <h2>Predict Event</h2>
     <label for="option_0">Option 0:</label>
@@ -67,17 +31,16 @@
     <input id="option_4" type="number" step="0.01"><br>
     <label for="timestamp">Timestamp:</label>
     <input id="timestamp" type="datetime-local"><br>
-    <button onclick="predictEvent()">Predict Event</button>
+    <button id="predictEventButton">Predict Event</button>
 
     <h2>Prediction</h2>
     <pre id="prediction"></pre>
     
     <h1>MetaMask Authentication</h1>
     <button id="connectButton">Connect MetaMask</button>
-    <div id="account"></div>
-    <div id="balance"></div>
-    <script src="/static/js/main.js"></script>
-    <button id="connectButton">Connect to web3 Life experience</button>
     <div id="accountInfo"></div>
+    
+    <script src="static/js/main.js" defer></script>
+    <script src="static/js/web3.js" defer></script>
 </body>
 </html>
