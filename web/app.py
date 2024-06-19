@@ -1,7 +1,6 @@
 # web/app.py
 
 import json
-import os
 from flask import Flask, request, jsonify
 from web3 import Web3
 from sklearn.externals import joblib
@@ -9,7 +8,9 @@ import pandas as pd
 from datetime import datetime
 
 app = Flask(__name__)
-w3 = Web3(Web3.HTTPProvider('http://localhost:8545'))
+
+# Connect to Cloudflare Ethereum Gateway
+w3 = Web3(Web3.HTTPProvider('https://cloudflare-eth.com'))
 
 # Load contract ABI and address
 with open('../static/HumanLifeTokenABI.json', 'r') as abi_file:
