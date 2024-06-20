@@ -1,6 +1,12 @@
 [
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "initialOwner",
+				"type": "address"
+			}
+		],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
 	},
@@ -204,13 +210,68 @@
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "user",
-				"type": "address"
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "birthDate",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "deathDate",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "weddingDate",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "divorceDate",
+						"type": "string"
+					},
+					{
+						"internalType": "string[]",
+						"name": "children",
+						"type": "string[]"
+					},
+					{
+						"internalType": "string",
+						"name": "education",
+						"type": "string"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "eventType",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "timestamp",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct HumanLifeToken.LifeEvent[]",
+						"name": "events",
+						"type": "tuple[]"
+					}
+				],
+				"indexed": false,
+				"internalType": "struct HumanLifeToken.Biography",
+				"name": "biography",
+				"type": "tuple"
 			}
 		],
-		"name": "FirstTimeConnected",
+		"name": "BiographyUpdated",
 		"type": "event"
 	},
 	{
@@ -265,19 +326,21 @@
 				"type": "uint256"
 			},
 			{
-				"internalType": "string",
-				"name": "eventType",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "timestamp",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "details",
-				"type": "string"
+				"components": [
+					{
+						"internalType": "string",
+						"name": "eventType",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct HumanLifeToken.LifeEvent",
+				"name": "lifeEvent",
+				"type": "tuple"
 			}
 		],
 		"name": "addLifeEvent",
@@ -349,15 +412,10 @@
 				"type": "uint256"
 			}
 		],
-		"name": "getHumanLife",
+		"name": "getBiography",
 		"outputs": [
 			{
 				"components": [
-					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					},
 					{
 						"internalType": "string",
 						"name": "birthDate",
@@ -365,12 +423,27 @@
 					},
 					{
 						"internalType": "string",
-						"name": "birthPlace",
+						"name": "deathDate",
 						"type": "string"
 					},
 					{
 						"internalType": "string",
-						"name": "gender",
+						"name": "weddingDate",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "divorceDate",
+						"type": "string"
+					},
+					{
+						"internalType": "string[]",
+						"name": "children",
+						"type": "string[]"
+					},
+					{
+						"internalType": "string",
+						"name": "education",
 						"type": "string"
 					},
 					{
@@ -384,11 +457,6 @@
 								"internalType": "uint256",
 								"name": "timestamp",
 								"type": "uint256"
-							},
-							{
-								"internalType": "string",
-								"name": "details",
-								"type": "string"
 							}
 						],
 						"internalType": "struct HumanLifeToken.LifeEvent[]",
@@ -396,98 +464,9 @@
 						"type": "tuple[]"
 					}
 				],
-				"internalType": "struct HumanLifeToken.HumanLife",
+				"internalType": "struct HumanLifeToken.Biography",
 				"name": "",
 				"type": "tuple"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "getLifeEvents",
-		"outputs": [
-			{
-				"components": [
-					{
-						"internalType": "string",
-						"name": "eventType",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "timestamp",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "details",
-						"type": "string"
-					}
-				],
-				"internalType": "struct HumanLifeToken.LifeEvent[]",
-				"name": "",
-				"type": "tuple[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "hasConnected",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "humanLives",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "birthDate",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "birthPlace",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "gender",
-				"type": "string"
 			}
 		],
 		"stateMutability": "view",
@@ -523,9 +502,68 @@
 				"internalType": "address",
 				"name": "to",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "birthDate",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "deathDate",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "weddingDate",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "divorceDate",
+						"type": "string"
+					},
+					{
+						"internalType": "string[]",
+						"name": "children",
+						"type": "string[]"
+					},
+					{
+						"internalType": "string",
+						"name": "education",
+						"type": "string"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "eventType",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "timestamp",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct HumanLifeToken.LifeEvent[]",
+						"name": "events",
+						"type": "tuple[]"
+					}
+				],
+				"internalType": "struct HumanLifeToken.Biography",
+				"name": "biography",
+				"type": "tuple"
 			}
 		],
-		"name": "mintFirstTimeToken",
+		"name": "mint",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -647,39 +685,6 @@
 			}
 		],
 		"name": "setApprovalForAll",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "birthDate",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "birthPlace",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "gender",
-				"type": "string"
-			}
-		],
-		"name": "setHumanLife",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -823,6 +828,73 @@
 			}
 		],
 		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "birthDate",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "deathDate",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "weddingDate",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "divorceDate",
+						"type": "string"
+					},
+					{
+						"internalType": "string[]",
+						"name": "children",
+						"type": "string[]"
+					},
+					{
+						"internalType": "string",
+						"name": "education",
+						"type": "string"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "eventType",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "timestamp",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct HumanLifeToken.LifeEvent[]",
+						"name": "events",
+						"type": "tuple[]"
+					}
+				],
+				"internalType": "struct HumanLifeToken.Biography",
+				"name": "biography",
+				"type": "tuple"
+			}
+		],
+		"name": "updateBiography",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"

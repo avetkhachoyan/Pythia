@@ -5,57 +5,80 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract HumanLifeToken is ERC721Enumerable, Ownable {
+    constructor(address initialOwner) ERC721("HumanLifeToken", "HLT") Ownable(initialOwner) {
+        transferOwnership(initialOwner);
+    }
+
     struct LifeEvent {
         string eventType;
         uint256 timestamp;
-        string details;
     }
 
-    struct HumanLife {
-        string name;
+    struct Biography {
         string birthDate;
-        string birthPlace;
-        string gender;
+        string deathDate;
+        string weddingDate;
+        string divorceDate;
+        string[] children;
+        string education;
         LifeEvent[] events;
     }
 
-    mapping(uint256 => HumanLife) public humanLives;
-    mapping(address => bool) public hasConnected;
+    mapping(uint256 => Biography) private _biographies;
+    mapping(uint256 => address) private _tokenOwners;
 
-    event FirstTimeConnected(address indexed user);
+    event BiographyUpdated(uint256 tokenId, Biography biography);
 
-    constructor() ERC721("HumanLifeToken", "HLT") Ownable(msg.sender) {}
-
-    function mintFirstTimeToken(address to) public {
-        require(!hasConnected[to], "Token already minted for this address");
-        uint256 tokenId = totalSupply() + 1;
-        _mint(to, tokenId);
-        hasConnected[to] = true;
-        emit FirstTimeConnected(to);
+    function mint(address to, uint256 tokenId, Biography memory biography) public onlyOwner {
+        _safeMint(to, tokenId);
+        _storeBiography(tokenId, biography);
+        _tokenOwners[tokenId] = to;
     }
 
-    function addLifeEvent(uint256 tokenId, string memory eventType, uint256 timestamp, string memory details) public {
-        require(ownerOf(tokenId) == msg.sender, "You do not own this token");
-        humanLives[tokenId].events.push(LifeEvent(eventType, timestamp, details));
+    function updateBiography(uint256 tokenId, Biography memory biography) public {
+        require(_isApprovedOrOwner(msg.sender, tokenId), "HumanLifeToken: caller is not owner nor approved");
+        require(_exists(tokenId), "HumanLifeToken: biography query for nonexistent token");
+        _storeBiography(tokenId, biography);
+        emit BiographyUpdated(tokenId, biography);
     }
 
-    function setHumanLife(uint256 tokenId, string memory name, string memory birthDate, string memory birthPlace, string memory gender) public {
-        require(ownerOf(tokenId) == msg.sender, "You do not own this token");
-        
-        delete humanLives[tokenId].events;
-        
-        HumanLife storage hl = humanLives[tokenId];
-        hl.name = name;
-        hl.birthDate = birthDate;
-        hl.birthPlace = birthPlace;
-        hl.gender = gender;
+    function getBiography(uint256 tokenId) public view returns (Biography memory) {
+        require(_exists(tokenId), "HumanLifeToken: biography query for nonexistent token");
+        return _biographies[tokenId];
     }
 
-    function getHumanLife(uint256 tokenId) public view returns (HumanLife memory) {
-        return humanLives[tokenId];
+    function addLifeEvent(uint256 tokenId, LifeEvent memory lifeEvent) public {
+        require(_isApprovedOrOwner(msg.sender, tokenId), "HumanLifeToken: caller is not owner nor approved");
+        require(_exists(tokenId), "HumanLifeToken: add event query for nonexistent token");
+        _biographies[tokenId].events.push(lifeEvent);
+        emit BiographyUpdated(tokenId, _biographies[tokenId]);
     }
 
-    function getLifeEvents(uint256 tokenId) public view returns (LifeEvent[] memory) {
-        return humanLives[tokenId].events;
+    function _storeBiography(uint256 tokenId, Biography memory biography) internal {
+        // Clear the existing events array
+        delete _biographies[tokenId].events;
+
+        // Copy each LifeEvent from memory to storage
+        for (uint256 i = 0; i < biography.events.length; i++) {
+            _biographies[tokenId].events.push(biography.events[i]);
+        }
+
+        // Update other fields
+        _biographies[tokenId].birthDate = biography.birthDate;
+        _biographies[tokenId].deathDate = biography.deathDate;
+        _biographies[tokenId].weddingDate = biography.weddingDate;
+        _biographies[tokenId].divorceDate = biography.divorceDate;
+        _biographies[tokenId].children = biography.children;
+        _biographies[tokenId].education = biography.education;
+    }
+
+    function _isApprovedOrOwner(address spender, uint256 tokenId) internal view returns (bool) {
+        require(_exists(tokenId), "ERC721: operator query for nonexistent token");
+        address owner = ownerOf(tokenId);
+        return (spender == owner || getApproved(tokenId) == spender || isApprovedForAll(owner, spender));
+    }
+
+    function _exists(uint256 tokenId) internal view returns (bool) {
+        return _tokenOwners[tokenId] != address(0);
     }
 }
